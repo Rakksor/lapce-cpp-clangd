@@ -4,7 +4,6 @@ display-name = "C/C++ (clangd)"
 name = "lapce-cpp-clangd"
 wasm = "lapce-cpp-clangd.wasm"
 version = "1.0.0"
-description = "C/C++ language support"
 icon = "logo.svg"
 repository = "https://github.com/lapce-community/lapce-cpp-clangd"
 
@@ -27,5 +26,5 @@ default = ""
 description = "Path to clangd"
 
 [config."volt.serverArgs"]
-default = "--background-index --clang-tidy --completion-style=detail --falback-style=LLVM --enable-config"
+default = "--background-index --clang-tidy --completion-style=detailed --fallback-style=LLVM --enable-config"
 description = "Arguments passed to clangd server"
