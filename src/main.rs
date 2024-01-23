@@ -89,14 +89,13 @@ fn initialize(params: InitializeParams) -> Result<()> {
   if let Some(options) = params.initialization_options.as_ref() {
     if let Some(volt) = options.get("volt") {
       if let Some(args) = volt.get("serverArgs") {
-        if let Some(args) = args.as_array() {
-          for arg in args {
-            if let Some(arg) = arg.as_str() {
-              server_args.push(string!(arg));
-            }
+        if let Some(args) = args.as_str() {
+          for arg in args.split_whitespace() {
+            server_args.push(string!(arg));
           }
         }
       }
+
       if let Some(server_path) = volt.get("serverPath") {
         if let Some(server_path) = server_path.as_str() {
           if !server_path.is_empty() {
