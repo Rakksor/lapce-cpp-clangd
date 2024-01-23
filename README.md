@@ -2,15 +2,15 @@
 
 ## Configuration
 
-In `settings.toml`:
+Use the settings UI or directly adjust `settings.toml`:
 
 ```toml
-[lapce-cpp-clangd.volt]
-clangdVersion = "15.0.0" # git tag from https://github.com/clangd/clangd
-serverPath = "<custom clangd>"
-serverArgs = [
-    #custom args
-]
+[lapce-cpp-clangd]
+volt.clangdVersion = "15.0.0"                  # git tag from https://github.com/clangd/clangd
+volt.serverPath = "<path to custom clangd>"    # use custom clangd instead of downloading
+volt.serverArgs = "--first-arg --second=arg=0" # flags passed to clangd (see clangd --help)
+volt.cPattern = "h,c"                          # use these file extensions for C
+volt.cppPattern = "H,hh,hpp,C,cc,cpp,c++"      # use these file extensions for C++
 ```
 
 ## Platforms
