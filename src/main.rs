@@ -137,14 +137,6 @@ fn initialize(params: InitializeParams) -> Result<()> {
       | Err(e) => return Err(anyhow!("Error ARCH: {}", e)),
     };
 
-    let mut last_ver = ok!(fs::OpenOptions::new()
-      .create(true)
-      .write(true)
-      .read(true)
-      .open(".clangd_ver"));
-    let mut buf = String::new();
-    ok!(last_ver.read_to_string(&mut buf));
-
     let zip_file = match VoltEnvironment::operating_system().as_deref() {
       | Ok("macos") => PathBuf::from(format!("clangd-mac-{clangd_version}.zip")),
       | Ok("linux") => PathBuf::from(format!("clangd-linux-{clangd_version}.zip")),
@@ -185,7 +177,6 @@ fn initialize(params: InitializeParams) -> Result<()> {
       }
     }
     ok!(fs::remove_file(&zip_file));
-    ok!(last_ver.write_all(clangd_version.as_bytes()));
   }
 
   let volt_uri = ok!(VoltEnvironment::uri());
