@@ -8,10 +8,8 @@ icon = "logo.svg"
 repository = "https://github.com/lapce-community/lapce-cpp-clangd"
 
 [activation]
-language = [
-    "c",
-    "cpp",
-]
+language = ["c", "cpp"]
+workspace-contains = ["*/compile_commands.json"]
 
 [config.clangdVersion]
 default = "17.0.3"
