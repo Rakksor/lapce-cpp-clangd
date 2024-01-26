@@ -13,18 +13,22 @@ language = [
     "cpp",
 ]
 
-[config."volt.cppPattern"]
-default = "H,hh,hpp,C,cc,cpp,c++"
-description = "C++ file extensions passed to clangd server"
+[config.clangdVersion]
+default = "17.0.3"
+description = "Version of clangd to automatically download"
 
-[config."volt.cPattern"]
+[config.serverPath]
+default = ""
+description = "Path to clangd when not using automatic download"
+
+[config.serverArgs]
+default = "--background-index --clang-tidy --completion-style=detailed --fallback-style=LLVM --enable-config"
+description = "Arguments passed to clangd server"
+
+[config.cPattern]
 default = "h,c"
 description = "C file extensions passed to clangd server"
 
-[config."volt.serverPath"]
-default = ""
-description = "Path to clangd"
-
-[config."volt.serverArgs"]
-default = "--background-index --clang-tidy --completion-style=detailed --fallback-style=LLVM --enable-config"
-description = "Arguments passed to clangd server"
+[config.cppPattern]
+default = "H,hh,hpp,C,cc,cpp,c++"
+description = "C++ file extensions passed to clangd server"

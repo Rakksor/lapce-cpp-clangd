@@ -37,7 +37,7 @@ macro_rules! ok {
   };
 }
 
-const CLANGD_VERSION: &str = "15.0.1";
+const CLANGD_VERSION: &str = "17.0.3";
 const CPP_PATTERN: &str = "**/*.{H,hh,hpp,h++,C,cc,cpp,c++}";
 const C_PATTERN: &str = "**/*.{h,c}";
 
@@ -46,25 +46,23 @@ fn initialize(params: InitializeParams) -> Result<()> {
   let mut c_pattern = string!(C_PATTERN);
 
   if let Some(options) = params.initialization_options.as_ref() {
-    if let Some(volt) = options.get("volt") {
-      if let Some(cpp_pat) = volt.get("cppPattern") {
-        if let Some(cpp_pat) = cpp_pat.as_str() {
-          let cpp_pat = cpp_pat.trim();
-          if !cpp_pat.is_empty() {
-            cpp_pattern = string!("**/*.{");
-            cpp_pattern.push_str(cpp_pat);
-            cpp_pattern.push('}');
-          }
+    if let Some(cpp_pat) = options.get("cppPattern") {
+      if let Some(cpp_pat) = cpp_pat.as_str() {
+        let cpp_pat = cpp_pat.trim();
+        if !cpp_pat.is_empty() {
+          cpp_pattern = string!("**/*.{");
+          cpp_pattern.push_str(cpp_pat);
+          cpp_pattern.push('}');
         }
       }
-      if let Some(c_pat) = volt.get("cPattern") {
-        if let Some(c_pat) = c_pat.as_str() {
-          let c_pat = c_pat.trim();
-          if !c_pattern.is_empty() {
-            c_pattern = string!("**/*.{");
-            c_pattern.push_str(c_pat);
-            c_pattern.push('}');
-          }
+    }
+    if let Some(c_pat) = options.get("cPattern") {
+      if let Some(c_pat) = c_pat.as_str() {
+        let c_pat = c_pat.trim();
+        if !c_pattern.is_empty() {
+          c_pattern = string!("**/*.{");
+          c_pattern.push_str(c_pat);
+          c_pattern.push('}');
         }
       }
     }
@@ -87,35 +85,32 @@ fn initialize(params: InitializeParams) -> Result<()> {
   let mut server_args = vec![];
 
   if let Some(options) = params.initialization_options.as_ref() {
-    if let Some(volt) = options.get("volt") {
-      if let Some(args) = volt.get("serverArgs") {
-        if let Some(args) = args.as_str() {
-          for arg in args.split_whitespace() {
-            server_args.push(string!(arg));
-          }
+    if let Some(args) = options.get("serverArgs") {
+      if let Some(args) = args.as_str() {
+        for arg in args.split_whitespace() {
+          server_args.push(string!(arg));
         }
       }
-
-      if let Some(server_path) = volt.get("serverPath") {
-        if let Some(server_path) = server_path.as_str() {
-          if !server_path.is_empty() {
-            let server_uri = ok!(Url::parse(&format!("urn:{}", server_path)));
-            PLUGIN_RPC.start_lsp(
-              server_uri,
-              server_args,
-              document_selector,
-              params.initialization_options,
-            );
-            return Ok(());
-          }
+    }
+    if let Some(server_path) = options.get("serverPath") {
+      if let Some(server_path) = server_path.as_str() {
+        if !server_path.is_empty() {
+          let server_uri = ok!(Url::parse(&format!("urn:{}", server_path)));
+          PLUGIN_RPC.start_lsp(
+            server_uri,
+            server_args,
+            document_selector,
+            params.initialization_options,
+          );
+          return Ok(());
         }
       }
-      if let Some(clangd_ver) = options.get("clangdVersion") {
-        if let Some(clangd_ver) = clangd_ver.as_str() {
-          let clangd_ver = clangd_ver.trim();
-          if !clangd_ver.is_empty() {
-            clangd_version = string!(clangd_ver)
-          }
+    }
+    if let Some(clangd_ver) = options.get("clangdVersion") {
+      if let Some(clangd_ver) = clangd_ver.as_str() {
+        let clangd_ver = clangd_ver.trim();
+        if !clangd_ver.is_empty() {
+          clangd_version = string!(clangd_ver)
         }
       }
     }
